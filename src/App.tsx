@@ -19,7 +19,7 @@ const optionsData2 = [
   { value: "Select a number of strings", label: "Select a number of strings" },
   { value: 6, label: 6 },
   { value: 7, label: 7 },
-  { value: 8, label: 8 },
+  { value: 8, label: 8 }
 ];
 
 const App = () => {
@@ -74,7 +74,7 @@ const App = () => {
             onChange={selectBrandHandler}
             width={360}
           />
-          <h2>Selected value: {selectedBrand}</h2>
+          <h2>Selected brand: {selectedBrand}</h2>
         </div>
         <div className={styles["dropdown-card"]}>
           <h2 className={styles["dropdown-card-title"]}>Example 2</h2>
@@ -82,11 +82,11 @@ const App = () => {
           <Dropdown
             options={optionsData2}
             defaultValue={6}
-            label="Select a guitar brand:"
+            label="#strings"
             onChange={selectStringHandler}
             width={360}
           />
-          <h2>Selected value: {selectedString}</h2>
+          <h2>Selected #strings: {selectedString}</h2>
         </div>
       </div>
     </div>

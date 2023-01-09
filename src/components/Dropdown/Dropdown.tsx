@@ -42,20 +42,22 @@ const Dropdown = (props: dropdownProps) => {
         setSelectionEvent(true);
         setExpand((prevState) => !prevState);
         setSelectedOption(options[counter].value);
-        onChange(options[counter].value)
+        onChange(options[counter].value);
       }
-      if (arrowUpKey) {
-        if (counter > 0) {
-          setCounter((prevCount) => prevCount - 1);
+      if (expand) {
+        if (arrowUpKey) {
+          if (counter > 0) {
+            setCounter((prevCount) => prevCount - 1);
+          }
         }
-      }
-      if (arrowDownKey) {
-        if (counter < options.length - 1) {
-          setCounter((prevCount) => prevCount + 1);
+        if (arrowDownKey) {
+          if (counter < options.length - 1) {
+            setCounter((prevCount) => prevCount + 1);
+          }
         }
-      }
-      if (deleteKey) {
-        clearSelection();
+        if (deleteKey) {
+          clearSelection();
+        }
       }
     }
   }, [enterKey, arrowUpKey, arrowDownKey, deleteKey]);
@@ -75,7 +77,7 @@ const Dropdown = (props: dropdownProps) => {
       onChange(defaultValue);
     } else {
       setSelectedOption(options[0].value);
-      onChange("please select an option below.");
+      onChange("please select an option.");
     }
   }, []);
 
@@ -114,7 +116,7 @@ const Dropdown = (props: dropdownProps) => {
   return (
     <div
       className={styles["dropdown-root"]}
-      style={{width: width}}
+      style={{ width: width }}
       tabIndex={0}
       ref={dropDownFocusRef}
       onFocus={(e) => handleActiveFocus(e)}

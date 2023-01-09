@@ -38,26 +38,29 @@ const Dropdown = (props: dropdownProps) => {
   // Handle keyboard input and increase count to navigate list.
   useEffect(() => {
     if (focus) {
+
       if (enterKey) {
         setSelectionEvent(true);
         setExpand((prevState) => !prevState);
         setSelectedOption(options[counter].value);
         onChange(options[counter].value);
       }
-      if (expand) {
-        if (arrowUpKey) {
-          if (counter > 0) {
-            setCounter((prevCount) => prevCount - 1);
-          }
+
+      // Disable navigation when collapsed to assure consistent behaviour.
+      if (!expand) return;
+
+      if (arrowUpKey) {
+        if (counter > 0) {
+          setCounter((prevCount) => prevCount - 1);
         }
-        if (arrowDownKey) {
-          if (counter < options.length - 1) {
-            setCounter((prevCount) => prevCount + 1);
-          }
+      }
+      if (arrowDownKey) {
+        if (counter < options.length - 1) {
+          setCounter((prevCount) => prevCount + 1);
         }
-        if (deleteKey) {
-          clearSelection();
-        }
+      }
+      if (deleteKey) {
+        clearSelection();
       }
     }
   }, [enterKey, arrowUpKey, arrowDownKey, deleteKey]);

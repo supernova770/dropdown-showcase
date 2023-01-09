@@ -39,7 +39,7 @@ const App = () => {
       <div style={{ margin: "0 auto", textAlign: "center" }}>
         <h1 className={styles["dropdown-card-title"]}>React Dropdown</h1>
         <div className={styles["dropdown-card"]}>
-          <h2>Key Instructions</h2>
+          <h2>Keyboard Controls</h2>
           <span style={{display:"flex", verticalAlign:"middle"}}>
             <HiBackspace size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
             <h2>{"[Backspace]"} Erase Selection</h2>

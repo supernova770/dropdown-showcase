@@ -91,7 +91,7 @@ const Dropdown = (props: dropdownProps) => {
   const clearSelection = () => {
     setSelectedOption(options[0].value);
     setSelectionEvent(false);
-    onChange("please select an option below.");
+    onChange("please select an option.");
     setExpand(false);
   };
 

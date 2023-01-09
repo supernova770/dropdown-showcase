@@ -9,6 +9,7 @@
     width: 300px;
     display: inline-block;
     margin: 10px;
+    background-color: #fff;
 }
 
 .dropdown-root:focus {

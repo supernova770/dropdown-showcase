@@ -32,42 +32,38 @@ const App = () => {
   };
 
   return (
-    <div style={{ display: "flex", alignContent: "center" }}>
+    <div className={styles["app-main"]}>
       <div style={{ margin: "0 auto", textAlign: "center" }}>
-        <h1
-          style={{
-            margin: 10,
-            fontFamily: "Arial",
-            fontSize: 40,
-            fontWeight: "bold  ",
-          }}
-        >
+        <h1 className={styles["dropdown-card-title"]}>
           React Dropdown
         </h1>
-        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
-          This is a dropdown without a default value.
-        </h4>
-        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
-          Selected value: {selectedBrand}
-        </h4>
-        <Dropdown
-          options={optionsData}
-          // defaultValue={"Strandberg"}
-          label="Select a guitar brand:"
-          onChange={selectBrandHandler}
-        />
-        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
-          This is a dropdown with a default value
-        </h4>
-        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
-          Selected value: {selectedString}
-        </h4>
-        <Dropdown
-          options={optionsData2}
-          defaultValue={6}
-          label="Select a guitar brand:"
-          onChange={selectStringHandler}
-        />
+        <div className={styles["dropdown-card"]}>
+          <h2>
+            Below is a dropdown without a default value.
+          </h2>
+          <Dropdown
+            options={optionsData}
+            label="Select a guitar brand:"
+            onChange={selectBrandHandler}
+          />
+          <h2>
+            Selected value: {selectedBrand}
+          </h2>
+        </div>
+        <div className={styles["dropdown-card"]}>
+          <h2 >
+            Below is a dropdown with a default value
+          </h2>
+          <Dropdown
+            options={optionsData2}
+            defaultValue={6}
+            label="Select a guitar brand:"
+            onChange={selectStringHandler}
+          />
+          <h2>
+            Selected value: {selectedString}
+          </h2>
+        </div>
       </div>
     </div>
   );

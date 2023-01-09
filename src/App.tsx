@@ -20,7 +20,6 @@ const optionsData2 = [
 ];
 
 const App = () => {
-
   const [selectedBrand, setSelectedBrand] = useState<string>("");
   const [selectedString, setSelectedString] = useState<number>(6);
 
@@ -33,13 +32,23 @@ const App = () => {
   };
 
   return (
-    <div style={{ display: "flex", alignContent:"center" }}>
-      <div style={{margin:"0 auto", textAlign:"center"}}>
-        <h1 style={{ margin: 10, fontFamily: "Arial", fontSize:25, fontWeight: "bold  " }}>
-          React Dropdown 
+    <div style={{ display: "flex", alignContent: "center" }}>
+      <div style={{ margin: "0 auto", textAlign: "center" }}>
+        <h1
+          style={{
+            margin: 10,
+            fontFamily: "Arial",
+            fontSize: 40,
+            fontWeight: "bold  ",
+          }}
+        >
+          React Dropdown
         </h1>
-        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize:18 }}>
-          selected: {selectedBrand}
+        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
+          This is a dropdown without a default value.
+        </h4>
+        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
+          Selected value: {selectedBrand}
         </h4>
         <Dropdown
           options={optionsData}
@@ -47,8 +56,11 @@ const App = () => {
           label="Select a guitar brand:"
           onChange={selectBrandHandler}
         />
-    <h4 style={{ margin: 10, fontFamily: "Arial", fontSize:18 }}>
-          selected: {selectedString}
+        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
+          This is a dropdown with a default value
+        </h4>
+        <h4 style={{ margin: 10, fontFamily: "Arial", fontSize: 18 }}>
+          Selected value: {selectedString}
         </h4>
         <Dropdown
           options={optionsData2}

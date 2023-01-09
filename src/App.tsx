@@ -19,7 +19,7 @@ const optionsData2 = [
   { value: "Select a number of strings", label: "Select a number of strings" },
   { value: 6, label: 6 },
   { value: 7, label: 7 },
-  { value: 8, label: 8 }
+  { value: 8, label: 8 },
 ];
 
 const App = () => {

@@ -20,7 +20,7 @@ export const useDetectKeyPress = (targetKey: any) => {
 
     window.addEventListener("keyup", upHandler);
 
-    // Cleanup the event listener.
+    // Cleanup the event listeners.
     return () => {
       window.removeEventListener("keydown", downHandler);
       window.removeEventListener("keyup", upHandler);

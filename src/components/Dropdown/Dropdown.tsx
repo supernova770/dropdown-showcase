@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { ArrowIcon } from "../Icons/ArrowIcon";
 import { CrossIcon } from "../Icons/CrossIcon";
 import { CheckIcon } from "../Icons/CheckIcon";
-import {useDetectKeyPress} from "../Hooks/useDetectKeyPress";
+import { useDetectKeyPress } from "../Hooks/useDetectKeyPress";
 import styles from "./Dropdown.module.css";
 
 type optionObject = {
@@ -18,49 +18,46 @@ interface dropdownProps {
 }
 
 const Dropdown = (props: dropdownProps) => {
-
   const { options, label, defaultValue, onChange } = props;
-  
+
   const dropDownFocusRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef<number>();
 
   const [expand, setExpand] = useState<Boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string | number>("");
   const [selectionEvent, setSelectionEvent] = useState<Boolean>(false);
-  const [count, setCount] = useState<number>(0);
+  const [counter, setCounter] = useState<number>(0);
+  const [focus, setFocus] = useState<Boolean>(false);
 
-  const arrowUpPressed = useDetectKeyPress('ArrowUp');
-  const arrowDownPressed = useDetectKeyPress('ArrowDown');
-  const enterPressed = useDetectKeyPress('Enter');
+  const arrowUp = useDetectKeyPress("ArrowUp");
+  const arrowDown = useDetectKeyPress("ArrowDown");
+  const enter = useDetectKeyPress("Enter");
 
+  // Handle keyboard input and increase count to navigate list.
   useEffect(() => {
-    if (enterPressed) {
-      setSelectionEvent(true);
-      setExpand((prevState) => !prevState);
-      setSelectedOption(options[count].value)
-    }
-  }, [enterPressed]);
-
-  useEffect(() => {
-    if (arrowUpPressed) {
-      if (count > 0 ){
-        setCount((count) => count - 1)
+    if (focus) {
+      if (enter) {
+        setSelectionEvent(true);
+        setExpand((prevState) => !prevState);
+        setSelectedOption(options[counter].value);
+        onChange(options[counter].value)
+      }
+      if (arrowUp) {
+        if (counter > 0) {
+          setCounter((prevCount) => prevCount - 1);
+        }
+      }
+      if (arrowDown) {
+        if (counter < options.length - 1) {
+          setCounter((prevCount) => prevCount + 1);
+        }
       }
     }
-  }, [arrowUpPressed]);
+  }, [enter, arrowUp, arrowDown]);
 
   useEffect(() => {
-    if (arrowDownPressed) {
-      if (count < options.length -1 ){
-        setCount((count) => count + 1)
-      }
-    }
-  }, [arrowDownPressed]);
-
-  useEffect(() => {
-    prevCountRef.current = count;
-  }, [count]);
- 
+    prevCountRef.current = counter;
+  }, [counter]);
 
   /* 
     If there exists a default value, set it and invoke onChange with the default value to be consistent. 
@@ -95,28 +92,47 @@ const Dropdown = (props: dropdownProps) => {
     setSelectedOption(options[0].value);
     setSelectionEvent(false);
     onChange("please select an option below.");
+    setExpand(false);
+  };
+
+  const handleActiveFocus = (e: any) => {
+    if (e.type === "focus") {
+      setFocus(true);
+      return;
+    }
+    setFocus(false);
   };
 
   return (
-    <div className={styles["dropdown-root"]} tabIndex={0} ref={dropDownFocusRef}>
+    <div
+      className={styles["dropdown-root"]}
+      tabIndex={0}
+      ref={dropDownFocusRef}
+      onFocus={(e) => handleActiveFocus(e)}
+      onBlur={(e) => handleActiveFocus(e)}
+    >
       <div
         className={
           expand
             ? styles["dropdown-input-expanded"]
             : styles["dropdown-input-collapsed"]
         }
-        onClick={()=>handleExpand()}
+        onClick={() => handleExpand()}
       >
         <div
           className={
-            selectionEvent 
+            selectionEvent
               ? styles["dropdown-selected-value"]
               : styles["dropdown-selected-value-initial"]
           }
         >
-          <div className={selectionEvent ? styles["dropdown-selected-value-chip"] : ""}>
-            {selectedOption} 
-            {selectionEvent && (<CrossIcon handleCross={clearSelection} />)}
+          <div
+            className={
+              selectionEvent ? styles["dropdown-selected-value-chip"] : ""
+            }
+          >
+            {selectedOption}
+            {selectionEvent && <CrossIcon handleCross={clearSelection} />}
           </div>
         </div>
         <ArrowIcon />
@@ -126,7 +142,11 @@ const Dropdown = (props: dropdownProps) => {
           {options.map((option, i) => (
             <div
               key={String(option.value) + i}
-              className={(i===count) ? styles["dropdown-option-selected"] : styles["dropdown-option"]}
+              className={
+                i === counter
+                  ? styles["dropdown-option-selected"]
+                  : styles["dropdown-option"]
+              }
               onClick={() => handleClick(option.value)}
             >
               {option.label}

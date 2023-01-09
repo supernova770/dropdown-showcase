@@ -1,8 +1,8 @@
-export const ArrowIcon = (handleArrow: { handleArrow: any }) => {
+export const ArrowIcon = (props: any) => {
     return (
       <svg
         style={{ cursor: "pointer" }}
-        onClick={() => handleArrow.handleArrow()}
+        onClick={() => props.handleArrow()}
         width="24"
         height="24"
         xmlns="http://www.w3.org/2000/svg"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "./Dropdown.css";
 import { ArrowIcon } from "../Icons/ArrowIcon";
 import { CrossIcon } from "../Icons/CrossIcon";
+import styles from "./Dropdown.module.css";
 
 type obj = {
   value: string | number;
@@ -48,39 +48,46 @@ const Dropdown = (props: props) => {
     setExpand(false);
   };
 
+  // If clicked on cross icon, clear the selection and return to default styling.
   const clearSelection = () => {
     setSelectedOption(label);
-    setIsSelected(false)
-  }
+    setIsSelected(false);
+    if (typeof defaultValue === "string" || typeof defaultValue === "number") {
+      onChange(defaultValue);
+    } else {
+      onChange(label);
+    }
+  };
 
   return (
-    <div className="dropdown-container">
+    <div className={styles["dropdown-container"]}>
       <div
         className={
-          expand ? "dropdown-input-expanded" : "dropdown-input-collapsed"
+          expand
+            ? styles["dropdown-input-expanded"]
+            : styles["dropdown-input-collapsed"]
         }
       >
         <div
           className={
             isSelected
-              ? "dropdown-selected-value"
-              : "dropdown-selected-value-initial"
+              ? styles["dropdown-selected-value"]
+              : styles["dropdown-selected-value-initial"]
           }
         >
-          {" "}
-          <div className={isSelected ? "chip" : ""}>
-            {selectedOption}  
-            {isSelected && (<CrossIcon handleCross={clearSelection}/>)}
+          <div className={isSelected ? styles["chip"] : ""}>
+            {selectedOption}
+            {isSelected && <CrossIcon handleCross={clearSelection} />}
           </div>
         </div>
         <ArrowIcon handleArrow={handleArrow} />
       </div>
       {expand && (
-        <div className="dropdown-menu">
+        <div className={styles["dropdown-menu"]}>
           {options.map((option, i) => (
             <div
               key={String(option.value) + i}
-              className="dropdown-option"
+              className={styles["dropdown-option"]}
               onClick={() => handleClick(option.value)}
             >
               {option.label}

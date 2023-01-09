@@ -29,15 +29,6 @@
     display: flex;
 }
 
-#cross-icon {
-    margin: auto;
-    cursor:pointer;
-}
-
-#cross-icon:hover {
-    fill: #ffc938;
-}
-
 .dropdown-input-expanded {
     padding: 16px;
     height: 48px;

@@ -35,25 +35,38 @@ const App = () => {
   };
 
   return (
-    <div className={styles["app-main"]}>
-      <div style={{ margin: "0 auto", textAlign: "center" }}>
+    <div id={styles["app-main"]}>
+      <div id={styles["app-main-child"]}>
         <h1 className={styles["dropdown-card-title"]}>React Dropdown</h1>
         <div className={styles["dropdown-card"]}>
-          <h2>Keyboard Controls</h2>
-          <span style={{display:"flex", verticalAlign:"middle"}}>
-            <HiBackspace size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+          <h2 className={styles["dropdown-card-title"]}>Keyboard Controls</h2>
+          <span className={styles["dropdown-card-list-item"]}>
+            <HiBackspace
+              size={18}
+              fill={"#383839"}
+              style={{ margin: "10px 0px 10px 10px" }}
+            />
             <h2>{"[Backspace]"} Erase Selection</h2>
-          </span> 
-          <span style={{display:"flex", verticalAlign:"middle"}}>
-            <HiOutlineArrowsUpDown size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+          </span>
+          <span className={styles["dropdown-card-list-item"]}>
+            <HiOutlineArrowsUpDown
+              size={18}
+              fill={"#383839"}
+              style={{ margin: "10px 0px 10px 10px" }}
+            />
             <h2>{"[Arrows Up/Down]"} Navigate List</h2>
-          </span> 
-          <span style={{display:"flex", verticalAlign:"middle"}}>
-            <AiOutlineEnter size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+          </span>
+          <span className={styles["dropdown-card-list-item"]}>
+            <AiOutlineEnter
+              size={18}
+              fill={"#383839"}
+              style={{ margin: "10px 0px 10px 10px" }}
+            />
             <h2>{"[Enter]"} Expand/close list or select item.</h2>
-          </span> 
+          </span>
         </div>
         <div className={styles["dropdown-card"]}>
+          <h2 className={styles["dropdown-card-title"]}>Example 1</h2>
           <h2>Below is a dropdown without a default value.</h2>
           <Dropdown
             options={optionsData}
@@ -64,6 +77,7 @@ const App = () => {
           <h2>Selected value: {selectedBrand}</h2>
         </div>
         <div className={styles["dropdown-card"]}>
+          <h2 className={styles["dropdown-card-title"]}>Example 2</h2>
           <h2>Below is a dropdown with a default value</h2>
           <Dropdown
             options={optionsData2}

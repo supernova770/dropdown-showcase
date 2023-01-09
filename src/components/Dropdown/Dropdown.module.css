@@ -1,9 +1,9 @@
-.dropdown-container {
+.dropdown-root {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 16px;
     color: #393938;
     text-align: left;
-    border: 1.5px solid #393938;
+    border: 1.5px solid #383839;
     position: relative;
     border-radius: 5px;
     width: 300px;
@@ -11,7 +11,12 @@
     margin: 10px;
 }
 
+.dropdown-root:focus {
+    box-shadow: 5px 5px 0px #38e4ff;
+}
+
 .dropdown-input-expanded {
+    cursor: pointer;
     padding: 16px;
     height: 48px;
     display: flex;
@@ -22,6 +27,7 @@
 }
 
 .dropdown-input-collapsed {
+    cursor: pointer;
     padding: 16px;
     height: 48px;
     display: flex;
@@ -58,6 +64,15 @@
 
 .dropdown-option:hover {
     background-color: #ffc938;
+}
+
+.dropdown-option-selected{
+    background-color: #ffc938;
+    padding: 16px;
+    height: 48px;
+    border-top: 1.5px solid #393938;
+    cursor: pointer;
+    display: block;
 }
 
 .dropdown-selected-value {

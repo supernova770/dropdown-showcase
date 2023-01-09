@@ -49,19 +49,18 @@ const Dropdown = (props: dropdownProps) => {
       // Disable navigation when collapsed to assure consistent behaviour.
       if (!expand) return;
 
-      if (arrowUpKey) {
-        if (counter > 0) {
-          setCounter((prevCount) => prevCount - 1);
-        }
+      if (arrowUpKey && counter > 0) {
+        setCounter((prevCount) => prevCount - 1);
       }
-      if (arrowDownKey) {
-        if (counter < options.length - 1) {
-          setCounter((prevCount) => prevCount + 1);
-        }
+
+      if (arrowDownKey && counter < options.length - 1) {
+        setCounter((prevCount) => prevCount + 1);
       }
+
       if (deleteKey) {
         clearSelection();
       }
+      
     }
   }, [enterKey, arrowUpKey, arrowDownKey, deleteKey]);
 

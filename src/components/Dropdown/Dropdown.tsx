@@ -14,11 +14,12 @@ interface dropdownProps {
   options: optionObject[];
   label: string;
   defaultValue?: string | number;
+  width: number;
   onChange(selectedOption: string | number): void;
 }
 
 const Dropdown = (props: dropdownProps) => {
-  const { options, label, defaultValue, onChange } = props;
+  const { options, width, label, defaultValue, onChange } = props;
 
   const dropDownFocusRef = useRef<HTMLDivElement>(null);
   const prevCountRef = useRef<number>();
@@ -29,31 +30,35 @@ const Dropdown = (props: dropdownProps) => {
   const [counter, setCounter] = useState<number>(0);
   const [focus, setFocus] = useState<Boolean>(false);
 
-  const arrowUp = useDetectKeyPress("ArrowUp");
-  const arrowDown = useDetectKeyPress("ArrowDown");
-  const enter = useDetectKeyPress("Enter");
+  const arrowUpKey = useDetectKeyPress("ArrowUp");
+  const arrowDownKey = useDetectKeyPress("ArrowDown");
+  const enterKey = useDetectKeyPress("Enter");
+  const deleteKey = useDetectKeyPress("Backspace");
 
   // Handle keyboard input and increase count to navigate list.
   useEffect(() => {
     if (focus) {
-      if (enter) {
+      if (enterKey) {
         setSelectionEvent(true);
         setExpand((prevState) => !prevState);
         setSelectedOption(options[counter].value);
         onChange(options[counter].value)
       }
-      if (arrowUp) {
+      if (arrowUpKey) {
         if (counter > 0) {
           setCounter((prevCount) => prevCount - 1);
         }
       }
-      if (arrowDown) {
+      if (arrowDownKey) {
         if (counter < options.length - 1) {
           setCounter((prevCount) => prevCount + 1);
         }
       }
+      if (deleteKey) {
+        clearSelection();
+      }
     }
-  }, [enter, arrowUp, arrowDown]);
+  }, [enterKey, arrowUpKey, arrowDownKey, deleteKey]);
 
   useEffect(() => {
     prevCountRef.current = counter;
@@ -93,6 +98,7 @@ const Dropdown = (props: dropdownProps) => {
     setSelectionEvent(false);
     onChange("please select an option.");
     setExpand(false);
+    setCounter(0);
   };
 
   const handleActiveFocus = (e: any) => {
@@ -103,9 +109,12 @@ const Dropdown = (props: dropdownProps) => {
     setFocus(false);
   };
 
+  // styles["dropdown-root"].width = width;
+
   return (
     <div
       className={styles["dropdown-root"]}
+      style={{width: width}}
       tabIndex={0}
       ref={dropDownFocusRef}
       onFocus={(e) => handleActiveFocus(e)}

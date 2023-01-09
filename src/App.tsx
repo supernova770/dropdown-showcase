@@ -38,6 +38,9 @@ const App = () => {
           React Dropdown
         </h1>
         <div className={styles["dropdown-card"]}>
+          <h2>Instructions</h2>
+        </div>
+        <div className={styles["dropdown-card"]}>
           <h2>
             Below is a dropdown without a default value.
           </h2>
@@ -45,6 +48,7 @@ const App = () => {
             options={optionsData}
             label="Select a guitar brand:"
             onChange={selectBrandHandler}
+            width={360}
           />
           <h2>
             Selected value: {selectedBrand}
@@ -59,6 +63,7 @@ const App = () => {
             defaultValue={6}
             label="Select a guitar brand:"
             onChange={selectStringHandler}
+            width={360}
           />
           <h2>
             Selected value: {selectedString}

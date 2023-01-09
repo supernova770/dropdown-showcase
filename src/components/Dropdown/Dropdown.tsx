@@ -33,7 +33,7 @@ const Dropdown = (props: dropdownProps) => {
   const arrowUpKey = useDetectKeyPress("ArrowUp");
   const arrowDownKey = useDetectKeyPress("ArrowDown");
   const enterKey = useDetectKeyPress("Enter");
-  const deleteKey = useDetectKeyPress("Backspace");
+  const backspaceKey = useDetectKeyPress("Backspace");
 
   // Handle keyboard input and increase count to navigate list.
   useEffect(() => {
@@ -46,6 +46,10 @@ const Dropdown = (props: dropdownProps) => {
         onChange(options[counter].value);
       }
 
+      if (backspaceKey) {
+        clearSelection();
+      }
+
       // Disable navigation when collapsed to assure consistent behaviour.
       if (!expand) return;
 
@@ -56,13 +60,9 @@ const Dropdown = (props: dropdownProps) => {
       if (arrowDownKey && counter < options.length - 1) {
         setCounter((prevCount) => prevCount + 1);
       }
-
-      if (deleteKey) {
-        clearSelection();
-      }
       
     }
-  }, [enterKey, arrowUpKey, arrowDownKey, deleteKey]);
+  }, [enterKey, arrowUpKey, arrowDownKey, backspaceKey]);
 
   useEffect(() => {
     prevCountRef.current = counter;
@@ -79,7 +79,7 @@ const Dropdown = (props: dropdownProps) => {
       onChange(defaultValue);
     } else {
       setSelectedOption(options[0].value);
-      onChange("please select an option.");
+      onChange("please select one.");
     }
   }, []);
 
@@ -100,7 +100,7 @@ const Dropdown = (props: dropdownProps) => {
   const clearSelection = () => {
     setSelectedOption(options[0].value);
     setSelectionEvent(false);
-    onChange("please select an option.");
+    onChange("please select one.");
     setExpand(false);
     setCounter(0);
   };
@@ -116,6 +116,7 @@ const Dropdown = (props: dropdownProps) => {
   return (
     <div
       className={styles["dropdown-root"]}
+      role="listbox"
       style={{ width: width }}
       tabIndex={0}
       ref={dropDownFocusRef}

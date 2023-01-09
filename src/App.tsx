@@ -74,7 +74,7 @@ const App = () => {
             onChange={selectBrandHandler}
             width={360}
           />
-          <h2>Selected brand: {selectedBrand}</h2>
+          <h2>Selected guitar brand: {selectedBrand}</h2>
         </div>
         <div className={styles["dropdown-card"]}>
           <h2 className={styles["dropdown-card-title"]}>Example 2</h2>

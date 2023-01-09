@@ -1,6 +1,9 @@
 import Dropdown from "./components/Dropdown/Dropdown";
 import { useState } from "react";
 import styles from "./App.module.css";
+import { HiBackspace } from "react-icons/hi2";
+import { HiOutlineArrowsUpDown } from "react-icons/hi2";
+import { AiOutlineEnter } from "react-icons/ai";
 
 const optionsData = [
   { value: "Select a guitar brand", label: "Select a guitar" },
@@ -34,30 +37,34 @@ const App = () => {
   return (
     <div className={styles["app-main"]}>
       <div style={{ margin: "0 auto", textAlign: "center" }}>
-        <h1 className={styles["dropdown-card-title"]}>
-          React Dropdown
-        </h1>
+        <h1 className={styles["dropdown-card-title"]}>React Dropdown</h1>
         <div className={styles["dropdown-card"]}>
-          <h2>Instructions</h2>
+          <h2>Key Instructions</h2>
+          <span style={{display:"flex", verticalAlign:"middle"}}>
+            <HiBackspace size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+            <h2>{"[Backspace]"} Erase Selection</h2>
+          </span> 
+          <span style={{display:"flex", verticalAlign:"middle"}}>
+            <HiOutlineArrowsUpDown size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+            <h2>{"[Arrows Up/Down]"} Navigate List</h2>
+          </span> 
+          <span style={{display:"flex", verticalAlign:"middle"}}>
+            <AiOutlineEnter size={18} fill={"#383839"} style={{margin:"10px 0px 10px 10px"}}/>
+            <h2>{"[Enter]"} Expand/close list or select item.</h2>
+          </span> 
         </div>
         <div className={styles["dropdown-card"]}>
-          <h2>
-            Below is a dropdown without a default value.
-          </h2>
+          <h2>Below is a dropdown without a default value.</h2>
           <Dropdown
             options={optionsData}
             label="Select a guitar brand:"
             onChange={selectBrandHandler}
             width={360}
           />
-          <h2>
-            Selected value: {selectedBrand}
-          </h2>
+          <h2>Selected value: {selectedBrand}</h2>
         </div>
         <div className={styles["dropdown-card"]}>
-          <h2 >
-            Below is a dropdown with a default value
-          </h2>
+          <h2>Below is a dropdown with a default value</h2>
           <Dropdown
             options={optionsData2}
             defaultValue={6}
@@ -65,9 +72,7 @@ const App = () => {
             onChange={selectStringHandler}
             width={360}
           />
-          <h2>
-            Selected value: {selectedString}
-          </h2>
+          <h2>Selected value: {selectedString}</h2>
         </div>
       </div>
     </div>

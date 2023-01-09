@@ -3,13 +3,14 @@ import { useState } from "react";
 
 const App = () => {
 
-  const [selectedBrand, setSelectedBrand] = useState<string | number>("Please select any of the above options.");
-  const selectBrandHandler = (selectedOption: string | number) => {
+  const [selectedBrand, setSelectedBrand] = useState<string>("");
+  const [selectedStrings, setSelectedStrings] = useState<number>(6);
+
+  const selectBrandHandler = (selectedOption: string ) => {
     setSelectedBrand(selectedOption);
   };
 
-  const [selectedStrings, setSelectedStrings] = useState<string | number>("Please select any of the above options.");
-  const selectStringHandler = (selectedOption: string | number) => {
+  const selectStringHandler = (selectedOption: number) => {
     setSelectedStrings(selectedOption);
   };
 
@@ -34,7 +35,8 @@ const App = () => {
         options={[
           { value: 6, label: 6 },
           { value: 7, label: 7 },
-          { value: 8, label: 8 }
+          { value: 8, label: 8 },
+          { value: 9, label: 9 }
         ]}
         defaultValue={6}
         label="Choose number of strings:"

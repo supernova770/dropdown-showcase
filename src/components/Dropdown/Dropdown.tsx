@@ -3,24 +3,25 @@ import { ArrowIcon } from "../Icons/ArrowIcon";
 import { CrossIcon } from "../Icons/CrossIcon";
 import styles from "./Dropdown.module.css";
 
-type obj = {
+type optionObject = {
   value: string | number;
   label: string | number;
 };
 
-interface props {
-  options: obj[];
+interface dropdownProps {
+  options: optionObject[];
   label: string;
   defaultValue?: string | number;
-  onChange: (event: any) => void;
+  onChange(selectedOption: string | number): void;
 }
 
-const Dropdown = (props: props) => {
+const Dropdown = (props: dropdownProps) => {
+
   const { options, label, defaultValue, onChange } = props;
 
   const [expand, setExpand] = useState<Boolean>(false);
   const [selectedOption, setSelectedOption] = useState<string | number>("");
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState<Boolean>(false);
 
   /* 
     If there exists a default value, set it and invoke onChange with the default value to be consistent. 
@@ -32,6 +33,7 @@ const Dropdown = (props: props) => {
       onChange(defaultValue);
     } else {
       setSelectedOption(label);
+      onChange("please select an option below.");
     }
   }, []);
 
@@ -50,12 +52,14 @@ const Dropdown = (props: props) => {
 
   // If clicked on cross icon, clear the selection and return to default styling.
   const clearSelection = () => {
+
     setSelectedOption(label);
     setIsSelected(false);
+    
     if (typeof defaultValue === "string" || typeof defaultValue === "number") {
       onChange(defaultValue);
     } else {
-      onChange(label);
+      onChange("please select an option below.");
     }
   };
 
@@ -75,9 +79,9 @@ const Dropdown = (props: props) => {
               : styles["dropdown-selected-value-initial"]
           }
         >
-          <div className={isSelected ? styles["chip"] : ""}>
+          <div className={isSelected ? styles["dropdown-selected-value-chip"] : ""}>
             {selectedOption}
-            {isSelected && <CrossIcon handleCross={clearSelection} />}
+            {isSelected && (<CrossIcon handleCross={clearSelection} />)}
           </div>
         </div>
         <ArrowIcon handleArrow={handleArrow} />

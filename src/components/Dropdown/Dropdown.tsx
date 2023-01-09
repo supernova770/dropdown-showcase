@@ -114,8 +114,6 @@ const Dropdown = (props: dropdownProps) => {
     setFocus(false);
   };
 
-  // styles["dropdown-root"].width = width;
-
   return (
     <div
       className={styles["dropdown-root"]}

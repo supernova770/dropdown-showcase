@@ -80,7 +80,7 @@ const Dropdown = (props: dropdownProps) => {
   function handleKeys(e: KeyboardEvent<HTMLDivElement>): void {
     e.stopPropagation();
     const { key } = e;
-    if (focus) {
+
       switch (key) {
         case "Enter":
           setSelectionEvent(true);
@@ -109,7 +109,7 @@ const Dropdown = (props: dropdownProps) => {
       }
       // Disable navigation when collapsed to ensure consistent behaviour.
       if (!expand) return;
-    }
+  
   }
 
   return (
@@ -122,6 +122,7 @@ const Dropdown = (props: dropdownProps) => {
       onFocus={(e) => handleActiveFocus(e)}
       onBlur={(e) => handleActiveFocus(e)}
       onKeyDown={(e) => handleKeys(e)}
+      aria-expanded={true}
     >
       <div
         className={

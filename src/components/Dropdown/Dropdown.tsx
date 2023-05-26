@@ -1,8 +1,7 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, KeyboardEvent } from "react";
 import { ArrowIcon } from "../Icons/ArrowIcon";
 import { CrossIcon } from "../Icons/CrossIcon";
 import { CheckIcon } from "../Icons/CheckIcon";
-import { useDetectKeyPress } from "../Hooks/useDetectKeyPress";
 import styles from "./Dropdown.module.css";
 
 type optionObject = {
@@ -19,54 +18,26 @@ interface dropdownProps {
 }
 
 const Dropdown = (props: dropdownProps) => {
-  const { options, width, label, defaultValue, onChange } = props;
+  const { options, width, defaultValue, onChange } = props;
 
   const dropDownFocusRef = useRef<HTMLDivElement>(null);
-  const prevCountRef = useRef<number>();
 
   const [expand, setExpand] = useState<Boolean>(false);
-  const [selectedOption, setSelectedOption] = useState<string | number>("");
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState<number>(0);
   const [selectionEvent, setSelectionEvent] = useState<Boolean>(false);
-  const [counter, setCounter] = useState<number>(0);
+
   const [focus, setFocus] = useState<Boolean>(false);
 
-  const arrowUpKey = useDetectKeyPress("ArrowUp");
-  const arrowDownKey = useDetectKeyPress("ArrowDown");
-  const enterKey = useDetectKeyPress("Enter");
-  const backspaceKey = useDetectKeyPress("Backspace");
-
-  // Handle keyboard input and increase count to navigate list.
-  useEffect(() => {
-    if (focus) {
-
-      if (enterKey) {
-        setSelectionEvent(true);
-        setExpand((prevState) => !prevState);
-        setSelectedOption(options[counter].value);
-        onChange(options[counter].value);
-      }
-
-      if (backspaceKey) {
-        clearSelection();
-      }
-
-      // Disable navigation when collapsed to assure consistent behaviour.
-      if (!expand) return;
-
-      if (arrowUpKey && counter > 0) {
-        setCounter((prevCount) => prevCount - 1);
-      }
-
-      if (arrowDownKey && counter < options.length - 1) {
-        setCounter((prevCount) => prevCount + 1);
-      }
-      
+  // Grouping state manager
+  const setState = (index?: number, event?: boolean, expand?: boolean) => {
+    if (typeof index !== "undefined") {
+      setSelectedOptionIndex(index);
+    } else if (typeof event !== "undefined") {
+      setSelectionEvent(event);
+    } else if (typeof expand !== "undefined") {
+      setExpand(expand);
     }
-  }, [enterKey, arrowUpKey, arrowDownKey, backspaceKey]);
-
-  useEffect(() => {
-    prevCountRef.current = counter;
-  }, [counter]);
+  };
 
   /* 
     If there exists a default value, set it and invoke onChange with the default value to be consistent. 
@@ -74,44 +45,72 @@ const Dropdown = (props: dropdownProps) => {
   */
   useEffect(() => {
     if (typeof defaultValue === "string" || typeof defaultValue === "number") {
-      setSelectedOption(defaultValue);
       setSelectionEvent(true);
       onChange(defaultValue);
     } else {
-      setSelectedOption(options[0].value);
       onChange("please select one.");
     }
   }, []);
 
   // Handle the click event of the ArrowIcon.
-  const handleExpand = () => {
+  const handleExpand = (): void => {
     setExpand((prevState) => !prevState);
   };
 
-  // Handle option click. Set the value internally, externally with onChange and collapse the list.
-  const handleClick = (val: string | number) => {
-    setSelectedOption(val);
-    setSelectionEvent(true);
-    onChange(val);
-    setExpand(false);
+  // Handle option click. Set the value internally, externaly with onChange and collapse the list.
+  const handleClick = (index: number): void => {
+    setState(index, true, false);
   };
 
   // If clicked on cross icon, clear the selection and return to default styling.
-  const clearSelection = () => {
-    setSelectedOption(options[0].value);
-    setSelectionEvent(false);
+  const clearSelection = (): void => {
+    setState(0, false, false);
     onChange("please select one.");
-    setExpand(false);
-    setCounter(0);
   };
 
-  const handleActiveFocus = (e: any) => {
+  const handleActiveFocus = (e: any): void => {
     if (e.type === "focus") {
       setFocus(true);
       return;
     }
     setFocus(false);
+    setExpand(false);
   };
+
+  function handleKeys(e: KeyboardEvent<HTMLDivElement>): void {
+    e.stopPropagation();
+    const { key } = e;
+    if (focus) {
+      switch (key) {
+        case "Enter":
+          setSelectionEvent(true);
+          setExpand((prevState) => !prevState);
+          onChange(options[selectedOptionIndex].value);
+        break;
+        case "Backspace":
+          clearSelection();
+        break;
+        case "ArrowUp": setSelectedOptionIndex((prevIndex) => {
+          if(prevIndex > 0) {
+            return prevIndex - 1
+          }
+          return 0
+        });
+        break;
+        case "ArrowDown": setSelectedOptionIndex((prevIndex) => {
+          if(selectedOptionIndex < options.length - 1) {
+            return prevIndex + 1
+          }
+          return 0
+        });
+        break;
+        case "Escape": setExpand((prevState) => !prevState);
+        break;
+      }
+      // Disable navigation when collapsed to ensure consistent behaviour.
+      if (!expand) return;
+    }
+  }
 
   return (
     <div
@@ -122,6 +121,7 @@ const Dropdown = (props: dropdownProps) => {
       ref={dropDownFocusRef}
       onFocus={(e) => handleActiveFocus(e)}
       onBlur={(e) => handleActiveFocus(e)}
+      onKeyDown={(e) => handleKeys(e)}
     >
       <div
         className={
@@ -143,7 +143,7 @@ const Dropdown = (props: dropdownProps) => {
               selectionEvent ? styles["dropdown-selected-value-chip"] : ""
             }
           >
-            {selectedOption}
+            {options[selectedOptionIndex].value}
             {selectionEvent && <CrossIcon handleCross={clearSelection} />}
           </div>
         </div>
@@ -151,18 +151,20 @@ const Dropdown = (props: dropdownProps) => {
       </div>
       {expand && (
         <div className={styles["dropdown-menu"]}>
-          {options.map((option, i) => (
+          {options.map((option, index) => (
             <div
-              key={String(option.value) + i}
+              key={String(option.value) + index}
               className={
-                i === counter
+                index === selectedOptionIndex
                   ? styles["dropdown-option-selected"]
                   : styles["dropdown-option"]
               }
-              onClick={() => handleClick(option.value)}
+              onClick={() => handleClick(index)}
             >
               {option.label}
-              {option.value === selectedOption ? <CheckIcon /> : null}
+              {option.value === options[selectedOptionIndex].value ? (
+                <CheckIcon />
+              ) : null}
             </div>
           ))}
         </div>

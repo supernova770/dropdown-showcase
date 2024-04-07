@@ -60,6 +60,7 @@ const Dropdown = (props: dropdownProps) => {
   // Handle option click. Set the value internally, externaly with onChange and collapse the list.
   const handleClick = (index: number): void => {
     setState(index, true, false);
+    setExpand((prevState) => !prevState);
   };
 
   // If clicked on cross icon, clear the selection and return to default styling.
@@ -83,6 +84,11 @@ const Dropdown = (props: dropdownProps) => {
 
       switch (key) {
         case "Enter":
+          setSelectionEvent(true);
+          setExpand((prevState) => !prevState);
+          onChange(options[selectedOptionIndex].value);
+        break;
+        case " ":
           setSelectionEvent(true);
           setExpand((prevState) => !prevState);
           onChange(options[selectedOptionIndex].value);
@@ -118,7 +124,7 @@ const Dropdown = (props: dropdownProps) => {
       role="listbox"
       style={{ width: width }}
       tabIndex={0}
-      ref={dropDownFocusRef}
+      ref={dropDownFocusRef}  
       onFocus={(e) => handleActiveFocus(e)}
       onBlur={(e) => handleActiveFocus(e)}
       onKeyDown={(e) => handleKeys(e)}
